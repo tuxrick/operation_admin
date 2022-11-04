@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
     role: {
         type: String,
         required: false,
-        minlength: 4
+        minlength: 2
     },
     token: {
         type: String,

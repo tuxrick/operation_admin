@@ -52,11 +52,11 @@ module.exports = {
     },
     validateRoleSuperAdmin: async (req, res, next) => {
         const user = req.decoded;
-        if (user.role === "admin" || user.role === "superadmin") {
+        if (user.role === "superadmin") {
             next();
         } else {
             return res.status(401).send({
-                message:"Unauthorized",
+                message:"Unauthorized, onlu Super Admins can do this",
                 status: "error"
             });
         }
@@ -67,7 +67,7 @@ module.exports = {
             next();
         } else {
             return res.status(401).send({
-                message:"Unauthorized",
+                message:"Unauthorized, only Admins and Super Admins can do this",
                 status: "error"
             });
         }

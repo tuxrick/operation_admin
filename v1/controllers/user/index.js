@@ -66,6 +66,71 @@ module.exports = {
         }        
     },
 
+
+    createUser: async (req, res) => {
+
+        const user_info = req.decoded;
+        const user_password = req.body.password;
+        let role = "user";
+
+        if(user_info.role == "superadmin" || user_info.role == "admin"){
+            if(req.body.role != undefined && req.body.role != "" && req.body.role != "superadmin"){
+                role = req.body.role;
+            }
+        }
+
+        const schemaRegister = Joi.object({
+            name: Joi.string().min(3).max(255).required(),
+            email: Joi.string().min(4).max(255).required().email(),
+            password: Joi.string().min(6).max(1024).required(),
+        })
+
+        // validate user
+        const { error } = schemaRegister.validate({
+            name: req.body.name,
+            email: req.body.email,
+            password: user_password
+        });
+        
+        if (error) {
+            return requests.error_response(req, res, error, error.details[0].message );
+        }
+
+        const isEmailExist = await User.findOne({ email: req.body.email });
+        if (isEmailExist) {
+            return requests.error_response(req, res, "", "Email already exists" );
+        }    
+
+        // hash password
+        const password = await user_functions.generateHashPassword(user_password);
+        try {
+
+            const user = await user_functions.createUser({
+                name: req.body.name,
+                email: req.body.email,
+                password: password,
+                role: role,
+                token: "temp"
+            });
+
+            const token = await user_functions.generateUserToken(user);
+
+            const updated_user = await user_functions.updateUserToken(user._id, token);
+    
+            return requests.success_response(req, res, 
+                {
+                    email: updated_user.email,
+                    name: updated_user.name,
+                    role: updated_user.role,
+                    token: updated_user.token
+                }, 
+                "Successful request");
+
+        } catch (error) {
+            return requests.error_response(req, res, "", "Error creating user" );
+        }        
+    },    
+
     login: async (req, res) => {            
         
         let user_info = {
@@ -117,7 +182,7 @@ module.exports = {
         
     },    
 
-    list_users: async (req, res) => {
+    listUsers: async (req, res) => {
 
         const users = await user_functions.listUsers();
         if(users != false){
@@ -147,7 +212,7 @@ module.exports = {
 
     },  
     
-    get_user_data: async (req, res) => {
+    getUserData: async (req, res) => {
         let user_info = req.decoded;
         try {
 

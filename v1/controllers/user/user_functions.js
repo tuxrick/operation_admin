@@ -48,7 +48,7 @@ module.exports = {
 
     },        
 
-    listUsers: async (user_info) => {
+    listUsers: async () => {
         try{
             const data = user.find({});
             return data;
