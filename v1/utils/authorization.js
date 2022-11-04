@@ -50,4 +50,26 @@ module.exports = {
         }    
 
     },
+    validateRoleSuperAdmin: async (req, res, next) => {
+        const user = req.decoded;
+        if (user.role === "admin" || user.role === "superadmin") {
+            next();
+        } else {
+            return res.status(401).send({
+                message:"Unauthorized",
+                status: "error"
+            });
+        }
+    },
+    validateRoleAdminAndSuperAdmin: async (req, res, next) => {
+        const user = req.decoded;
+        if (user.role === "admin" || user.role === "superadmin") {
+            next();
+        } else {
+            return res.status(401).send({
+                message:"Unauthorized",
+                status: "error"
+            });
+        }
+    }    
 }

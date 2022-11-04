@@ -3,7 +3,6 @@
 const express = require('express'); 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const fileUpload = require('express-fileupload');
 
 require('dotenv').config();
 
@@ -34,10 +33,6 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
-app.use(fileUpload({
-    useTempFiles : true,
-    tempFileDir : '/tmp/'
-}));
 
 let api_route = "/api";
 let v1 = require('./v1/index.js');

@@ -119,8 +119,12 @@ module.exports = {
 
     list_users: async (req, res) => {
 
-        const users = await User.find({});
-        return requests.success_response(req, res, users, "Successful request");
+        const users = await user_functions.listUsers();
+        if(users != false){
+            return requests.success_response(req, res, users, "Successful request");
+        }else{
+            return requests.error_response(req, res, "", "Error listing users" );
+        }
 
     },
 
@@ -152,7 +156,9 @@ module.exports = {
             const user_data = {
                 id:user._id,
                 name:user.name,
-                //email:user.email
+                email:user.email,
+                role:user.role,
+                creation_date: user.creation_date
             };
 
             return requests.success_response(req, res, user_data, "Successful request");

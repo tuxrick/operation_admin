@@ -48,6 +48,16 @@ module.exports = {
 
     },        
 
+    listUsers: async (user_info) => {
+        try{
+            const data = user.find({});
+            return data;
+        }catch{
+            return false;
+        }
+    },
+
+
     createUser: async (user_info) => {
         try{
             const user_data = new user(user_info);
