@@ -56,7 +56,7 @@ module.exports = {
             next();
         } else {
             return res.status(401).send({
-                message:"Unauthorized, onlu Super Admins can do this",
+                message:"Unauthorized, only Super Admins can do this",
                 status: "error"
             });
         }

@@ -10,6 +10,9 @@ module.exports = (router) => {
 	router.route('/create_user')
 		.post(auth.verifyToken, auth.validateRoleAdminAndSuperAdmin, controller.createUser);
 
+	router.route('/update_user')
+		.post(auth.verifyToken, controller.updateUser);		
+
 	router.route('/login')
 		.post(controller.login);
 	

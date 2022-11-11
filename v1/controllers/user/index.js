@@ -182,6 +182,33 @@ module.exports = {
         
     },    
 
+    updateUser: async (req, res) => {
+        
+        user_info = req.decoded;
+        let user_data ={
+            name: req.body.name,
+            english_level: req.body.english_level,
+            technical_knowledge: req.body.technical_knowledge,
+            resume_url: req.body.resume_url
+        }
+
+        const user = await user_functions.getUserById(user_info._id);
+
+        user.name = user_data.name;
+        user.english_level = user_data.english_level;
+        user.technical_knowledge = user_data.technical_knowledge;
+        user.resume_url = user_data.resume_url;
+
+        const user_updated = await user_functions.updateUser(user);
+
+        if(user_updated != false){
+            return requests.success_response(req, res, user_updated, "Successful request");
+        }else{
+            return requests.error_response(req, res, "", "Error updating user" );
+        }
+        
+    },
+
     listUsers: async (req, res) => {
 
         const users = await user_functions.listUsers();

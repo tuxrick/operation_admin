@@ -30,6 +30,21 @@ const userSchema = mongoose.Schema({
     token: {
         type: String,
         required: false,
+    },
+    english_level: {
+        type: String,
+        required: false,
+        default: ""
+    },
+    technical_knowledge: {
+        type: String,
+        required: false,
+        default: ""
+    },
+    resume_url: {
+        type: String,
+        required: false,
+        default: ""
     }
 })
 
